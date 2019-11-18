@@ -32,3 +32,5 @@ secret: ~
 
 ## If the google auth file is saved in a different secret key you can specify it here
 # secretKey: key.json
+
+schedule: "0 10 * * *"
