@@ -24,15 +24,20 @@ spec:
             - {{ . }}
             {{- end }}
             name: cleanupdisk
+            {{- if .Values.secret }}
             volumeMounts:
-            - name: credentials
+            - name: google-cloud-key
               mountPath: /secrets
             env:
             - name: GOOGLE_APPLICATION_CREDENTIALS
-              value: /secrets/credentials.json
-          imagePullSecrets:
-          - name: registry.softonic.one
+              value: /secrets/key.json
+            {{- end }}
+          {{- if .Values.secret }}
           volumes:
-          - name: credentials
-            secret:
-              secretName: credentials
+            - name: google-cloud-key
+              secret:
+                secretName: {{ .Values.secret }}
+                items:
+                  - key: {{ default "key.json" .Values.secretKey }}
+                    path: key.json
+          {{- end }}

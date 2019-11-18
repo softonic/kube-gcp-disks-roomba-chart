@@ -14,3 +14,21 @@ tolerations: []
 affinity: {}
 
 args: []
+
+
+# script needs credentials to log into GCE.  Create a secret with the key
+# of credentials.json with the contents of a GCE service account that has permissions to create
+# and modify load balancers.  The key should be in the JSON format.
+# Example:
+# Your secret should look like:
+# apiVersion: v1
+# kind: Secret
+# metadata:
+#   name: google-cloud-key
+# type: Opaque
+# data:
+#   key.json: < base64 encoded JSON service account key>
+secret: ~
+
+## If the google auth file is saved in a different secret key you can specify it here
+# secretKey: key.json
