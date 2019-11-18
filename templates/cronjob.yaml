@@ -19,7 +19,9 @@ spec:
           restartPolicy: Never
           containers:
           - image: softonic/kube-gcp-disks-roomba:{{ .Values.image.tag }}
+            {{- if .Values.args }}
             args:
+            {{- end }}
 	    {{- range .Values.args }}
             - {{ . }}
             {{- end }}
