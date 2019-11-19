@@ -22,7 +22,7 @@ spec:
             {{- if .Values.args }}
             args:
             {{- end }}
-	    {{- range .Values.args }}
+            {{- range .Values.args }}
             - {{ . }}
             {{- end }}
             name: cleanupdisk
