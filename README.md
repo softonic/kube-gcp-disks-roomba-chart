@@ -17,15 +17,15 @@ Helm chart for https://github.com/softonic/kube-gcp-disks-roomba
 | `image.tag`                                         | Tag used for the image                                        | `latest`                           |
 | `resources`                                         | Nested hash of chart resources                                | `null`                             |
 | `secretKey`					      | If the google auth file is saved in a different secret key    | `key.json`                         | 
-| `secret`                                            | script needs credentials to log into GCE.  Create a secret with the key of credentials.json with the contents of a GCE service account that has permissions to create and modify load balancers.  The key should be in the JSON format.                                     | `~`                                |
 
 
-secret: ~
-
-## If the google auth file is saved in a different secret key you can specify it here
-# secretKey: key.json
+If the google auth file is saved in a different secret key you can specify it here
+secretKey: key.json
 
 ### Usage
+
+YOU SHOULD PROVIDE A SECRET NAME CALLED credentials. 
+And should contain the json service account credentials that will have the permissions to delete the unused disks in GCP.
 
 If we want this chart to work, we need to set the following secrets:
 

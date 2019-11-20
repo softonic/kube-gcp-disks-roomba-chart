@@ -26,20 +26,16 @@ spec:
             - {{ . }}
             {{- end }}
             name: cleanupdisk
-            {{- if .Values.secret }}
             volumeMounts:
             - name: google-cloud-key
               mountPath: /secrets
             env:
             - name: GOOGLE_APPLICATION_CREDENTIALS
               value: /secrets/key.json
-            {{- end }}
-          {{- if .Values.secret }}
           volumes:
             - name: google-cloud-key
               secret:
-                secretName: {{ .Values.secret }}
+                secretName: credentials
                 items:
                   - key: {{ default "key.json" .Values.secretKey }}
                     path: key.json
-          {{- end }}
