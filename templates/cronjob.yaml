@@ -1,0 +1,45 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: cleanupdisk
+  labels:
+    heritage: {{ .Release.Service | quote }}
+    release: {{ .Release.Name | quote }}
+    chart: "{{.Chart.Name}}-{{.Chart.Version}}"
+spec:
+  schedule: {{ .Values.schedule }}
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: cleanupdisk
+        spec:
+          serviceAccountName: {{ template "fullname" . }}
+          restartPolicy: Never
+          containers:
+          - image: softonic/kube-gcp-disks-roomba:{{ .Values.image.tag }}
+            {{- if .Values.args }}
+            args:
+            {{- end }}
+            {{- range .Values.args }}
+            - {{ . }}
+            {{- end }}
+            name: cleanupdisk
+            {{- if .Values.secret }}
+            volumeMounts:
+            - name: google-cloud-key
+              mountPath: /secrets
+            env:
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: /secrets/key.json
+            {{- end }}
+          {{- if .Values.secret }}
+          volumes:
+            - name: google-cloud-key
+              secret:
+                secretName: {{ .Values.secret }}
+                items:
+                  - key: {{ default "key.json" .Values.secretKey }}
+                    path: key.json
+          {{- end }}
